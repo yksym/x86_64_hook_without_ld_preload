@@ -41,6 +41,11 @@
 #include <unistd.h>
 //#include "library.h"
 //
+#define LT_ELFCLASS     ELFCLASS64
+#define LT_ELF_MACHINE  EM_ALPHA
+#define LT_ELFCLASS2    ELFCLASS64
+#define LT_ELF_MACHINE2 EM_FAKE_ALPHA
+
 typedef void *arch_addr_t;
 
 struct arch_ltelf_data {
@@ -213,11 +218,7 @@ open_elf(struct ltelf *lte, const char *filename)
 
 	elf_version(EV_CURRENT);
 
-#ifdef HAVE_ELF_C_READ_MMAP
 	lte->elf = elf_begin(lte->fd, ELF_C_READ_MMAP, NULL);
-#else
-	lte->elf = elf_begin(lte->fd, ELF_C_READ, NULL);
-#endif
 
 	if (lte->elf == NULL || elf_kind(lte->elf) != ELF_K_ELF) {
 		fprintf(stderr, "\"%s\" is not an ELF file\n", filename);
@@ -233,26 +234,6 @@ open_elf(struct ltelf *lte, const char *filename)
 	if (lte->ehdr.e_type != ET_EXEC && lte->ehdr.e_type != ET_DYN) {
 		fprintf(stderr, "\"%s\" is neither an ELF executable"
 			" nor a shared library\n", filename);
-		exit(EXIT_FAILURE);
-	}
-
-	if (1
-#ifdef LT_ELF_MACHINE
-	    && (lte->ehdr.e_ident[EI_CLASS] != LT_ELFCLASS
-		|| lte->ehdr.e_machine != LT_ELF_MACHINE)
-#endif
-#ifdef LT_ELF_MACHINE2
-	    && (lte->ehdr.e_ident[EI_CLASS] != LT_ELFCLASS2
-		|| lte->ehdr.e_machine != LT_ELF_MACHINE2)
-#endif
-#ifdef LT_ELF_MACHINE3
-	    && (lte->ehdr.e_ident[EI_CLASS] != LT_ELFCLASS3
-		|| lte->ehdr.e_machine != LT_ELF_MACHINE3)
-#endif
-		) {
-		fprintf(stderr,
-			"\"%s\" is ELF from incompatible architecture\n",
-			filename);
 		exit(EXIT_FAILURE);
 	}
 

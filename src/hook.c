@@ -14,7 +14,7 @@ struct Arg {
 static int cb(struct dl_phdr_info *info, size_t size, void* data)
 {
     struct Arg* arg = (struct Arg*) data;
-    printf("%08lx %s\n", info->dlpi_addr, info->dlpi_name);
+    //printf("%08lx %s\n", info->dlpi_addr, info->dlpi_name);
     if (strcmp(arg->libPath, info->dlpi_name) == 0) {
         arg->offset = (size_t) info->dlpi_addr;
     }
