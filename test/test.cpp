@@ -4,6 +4,7 @@
 
 
 extern "C" {
+    void dummy();
     void* calloc_hook(size_t n, size_t size)
     {
         DECL_ORG_FUNC(calloc, org_calloc);
@@ -32,6 +33,8 @@ void test(const char* program)
 
 int main(int argc, char** argv)
 {
-    test(argv[0]);
+    puts("main");
+    dummy();
+    //test(argv[0]);
     return 0;
 }
