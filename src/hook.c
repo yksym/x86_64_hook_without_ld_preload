@@ -50,7 +50,7 @@ void* getPLTAddrFromElf(const char *filepath, const char* funcname, size_t bias)
     }
     //puts(output);
     long n = strtol(output, NULL, 16);
-    return (void*)(n + bias);
+    return (n == 0) ? NULL : (void*)(n + bias);
 }
 
 

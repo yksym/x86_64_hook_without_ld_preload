@@ -48,6 +48,7 @@ LibHook<RET,ARGS...> _resolve_ftype(RET(*f)(ARGS...))
     return LibHook<RET,ARGS...>();
 }
 
+//RTLD_DEFAULT
 #define DECL_ORG_FUNC(func, ofunc) \
     typedef decltype(&func) func ## _t;\
     func ## _t ofunc = (func ## _t) dlsym(RTLD_NEXT, #func);
