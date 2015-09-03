@@ -42,7 +42,7 @@ int execCmd(const char* cmd, char* output)
 void* getPLTAddrFromElf(const char *filepath, const char* funcname, size_t bias)
 {
     char cmd[512];
-    char output[512];
+    char output[512] = {};
     sprintf(cmd, "objdump -d %s | grep '<%s@plt>:' | awk '{print $1}' | head -n 1", filepath, funcname);
     int ret = execCmd(cmd, output);
     if (ret) {
